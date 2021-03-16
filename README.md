@@ -8,7 +8,9 @@ Run project ```docker-compose up```
 Run tests:
 
 ```
-docker exec -it <container_name> ./manage.py test
+docker exec -it <container_name> bash
+. venv/bin/activate
+./manage.py test
 ```
 
 API REST
@@ -34,6 +36,7 @@ products: list
     price: float
     qty: int
 total_price: float
+user_email: str
 ```
 
 * For get reports:
