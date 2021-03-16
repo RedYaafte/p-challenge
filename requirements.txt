@@ -1,0 +1,6 @@
+Django==3.1.7
+mongoengine==0.23.0
+psycopg2-binary==2.8.6
+django-cors-headers==3.7.0
+djangorestframework==3.12.2
+django-rest-framework-mongoengine==3.4.1

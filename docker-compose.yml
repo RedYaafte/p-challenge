@@ -1,0 +1,53 @@
+version: '3.5'
+
+services:
+  nosql-point-of-sale:
+    container_name: ${MONGO_HOST}
+    image: ${MONGO_IMAGE}
+    volumes:
+      - nosql-point-of-sale:${MONGO_DATA}
+  sql-point-of-sale:
+    image: ${SQL_IMAGE}
+    container_name: ${SQL_HOST}
+    env_file:
+      - .env
+    environment:
+      PGDATA: ${SQL_DATA}
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_DB: ${SQL_DB_NAME}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+    expose:
+      - ${SQL_PORT}
+    ports:
+      - ${SQL_PORT}:${SQL_PORT}
+    volumes:
+      - sql-data:${SQL_DATA}
+    command:
+      -p ${SQL_PORT}
+  point-of-sale:
+    image: ${APP_IMAGE}
+    container_name: ${APP_NAME}
+    expose:
+      - ${APP_PORT}
+    env_file:
+      - .env
+    environment:
+      APP_PORT: ${APP_PORT}
+    ports:
+      - ${APP_HOST_PORT}:${APP_PORT}
+    volumes:
+      - ${APP_VOLUME}
+    working_dir: ${APP_WORKING_DIR}
+    tty: true
+    depends_on:
+      - sql-point-of-sale
+      - nosql-point-of-sale
+    command: sh -c "bash start.sh || tail -f /dev/null"
+
+networks:
+  default:
+    name: ${NETWORK}
+
+volumes:
+  sql-data:
+  nosql-point-of-sale:

@@ -1,0 +1,8 @@
+*.swp
+*.swa
+*.sqlite3
+
+.env
+venv/
+.vscode/
+__pycache__/
